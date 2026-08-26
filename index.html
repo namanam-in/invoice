@@ -1,177 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Professional GST Invoice Maker for Indian businesses" />
-  <title>GST Invoice Maker</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pro GST Invoice Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-mark">₹</div>
-        <div>
-          <h1>GST Invoice Maker</h1>
-          <p>Professional billing for your business</p>
-        </div>
-      </div>
-      <div class="top-actions">
-        <button class="btn secondary" id="settingsBtn">Business Settings</button>
-        <button class="btn primary" id="newInvoiceBtn">+ New Invoice</button>
-      </div>
-    </header>
+<header class="topbar">
+  <div class="brand"><div class="logo">₹</div><div><h1>Pro GST Invoice Maker</h1><p>Professional billing for Indian businesses</p></div></div>
+  <div class="actions"><button class="btn ghost" id="productsBtn">Products</button><button class="btn ghost" id="customersBtn">Customers</button><button class="btn ghost" id="settingsBtn">Seller Details</button><button class="btn primary" id="newBtn">+ New Invoice</button></div>
+</header>
 
-    <main class="container">
-      <section class="stats-grid">
-        <div class="stat-card"><span>Total Invoices</span><strong id="statInvoices">0</strong></div>
-        <div class="stat-card"><span>Total Sales</span><strong id="statSales">₹0.00</strong></div>
-        <div class="stat-card"><span>GST Collected</span><strong id="statGst">₹0.00</strong></div>
-        <div class="stat-card"><span>Pending</span><strong id="statPending">₹0.00</strong></div>
-      </section>
+<main class="wrap">
+<section class="stats">
+ <div><span>Invoices</span><b id="sInvoices">0</b></div><div><span>Total Sales</span><b id="sSales">₹0.00</b></div>
+ <div><span>GST Collected</span><b id="sGst">₹0.00</b></div><div><span>Outstanding</span><b id="sOutstanding">₹0.00</b></div>
+</section>
 
-      <section class="panel invoice-panel">
-        <div class="panel-header">
-          <div>
-            <h2>Create Tax Invoice</h2>
-            <p>Enter the invoice details below. GST is calculated automatically.</p>
-          </div>
-          <div class="header-actions">
-            <button class="btn secondary" id="saveInvoiceBtn">Save Invoice</button>
-            <button class="btn primary" id="downloadBtn">Download PDF</button>
-          </div>
-        </div>
+<section class="panel">
+ <div class="panelHead"><div><h2>Create Tax Invoice</h2><p>Complete the details and the tax calculation updates automatically.</p></div>
+ <div class="actions"><button class="btn ghost" id="saveBtn">Save</button><button class="btn primary" id="printBtn">Print / Save PDF</button></div></div>
 
-        <div class="form-section">
-          <div class="section-title">Invoice Details</div>
-          <div class="form-grid four">
-            <label>Invoice Number<input id="invoiceNumber" /></label>
-            <label>Invoice Date<input id="invoiceDate" type="date" /></label>
-            <label>Place of Supply<input id="placeOfSupply" placeholder="e.g. Haryana" /></label>
-            <label>Payment Status
-              <select id="paymentStatus">
-                <option value="Pending">Pending</option>
-                <option value="Paid">Paid</option>
-                <option value="Partially Paid">Partially Paid</option>
-              </select>
-            </label>
-          </div>
-        </div>
-
-        <div class="party-grid">
-          <div class="card-inset">
-            <div class="section-title">Bill From — Seller</div>
-            <div id="sellerPreview" class="seller-preview"></div>
-          </div>
-          <div class="card-inset">
-            <div class="section-title">Bill To — Buyer</div>
-            <div class="form-grid two">
-              <label>Buyer / Company Name<input id="buyerName" placeholder="Customer name" /></label>
-              <label>GSTIN<input id="buyerGstin" placeholder="Optional for unregistered buyer" maxlength="15" /></label>
-              <label>Phone<input id="buyerPhone" /></label>
-              <label>State<input id="buyerState" placeholder="e.g. Delhi" /></label>
-              <label class="full">Billing Address<textarea id="buyerAddress" rows="2"></textarea></label>
-              <label>City<input id="buyerCity" /></label>
-              <label>Pincode<input id="buyerPincode" maxlength="6" /></label>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <div class="items-heading">
-            <div class="section-title">Products / Services</div>
-            <button class="btn secondary small" id="addItemBtn">+ Add Item</button>
-          </div>
-          <div class="table-wrap">
-            <table class="items-table">
-              <thead>
-                <tr>
-                  <th style="min-width:220px">Product / Service</th>
-                  <th>HSN/SAC</th>
-                  <th>Qty</th>
-                  <th>Unit</th>
-                  <th>Rate</th>
-                  <th>Discount</th>
-                  <th>GST %</th>
-                  <th>Taxable</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="itemsBody"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="bottom-grid">
-          <div class="card-inset">
-            <div class="section-title">Notes / Terms</div>
-            <textarea id="notes" rows="8" placeholder="Payment terms, warranty, bank details, delivery notes, etc."></textarea>
-          </div>
-          <div class="totals card-inset">
-            <div class="tax-mode">
-              <span>Supply Type</span>
-              <strong id="supplyType">Intra-State — CGST + SGST</strong>
-            </div>
-            <div class="total-row"><span>Taxable Amount</span><strong id="taxableTotal">₹0.00</strong></div>
-            <div class="total-row"><span>CGST</span><strong id="cgstTotal">₹0.00</strong></div>
-            <div class="total-row"><span>SGST</span><strong id="sgstTotal">₹0.00</strong></div>
-            <div class="total-row"><span>IGST</span><strong id="igstTotal">₹0.00</strong></div>
-            <div class="total-row"><span>Round Off</span><strong id="roundOff">₹0.00</strong></div>
-            <div class="grand-total"><span>Grand Total</span><strong id="grandTotal">₹0.00</strong></div>
-            <div class="amount-words"><span>Amount in words</span><strong id="amountWords">Zero Rupees Only</strong></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel history-panel">
-        <div class="panel-header compact">
-          <div>
-            <h2>Invoice History</h2>
-            <p>Saved invoices are stored in this browser.</p>
-          </div>
-          <input class="search" id="invoiceSearch" placeholder="Search invoices..." />
-        </div>
-        <div class="table-wrap">
-          <table class="history-table">
-            <thead><tr><th>Invoice</th><th>Customer</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="historyBody"></tbody>
-          </table>
-        </div>
-      </section>
-    </main>
+ <div class="section">
+  <div class="sectionTitle">Invoice Details</div>
+  <div class="grid four">
+   <label>Invoice Number<input id="invoiceNo"></label><label>Invoice Date<input id="invoiceDate" type="date"></label>
+   <label>Place of Supply<input id="pos" placeholder="e.g. Haryana"></label>
+   <label>Status<select id="status"><option>Pending</option><option>Paid</option><option>Partially Paid</option></select></label>
   </div>
+ </div>
 
-  <div class="modal hidden" id="settingsModal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <div><h2>Business Settings</h2><p>These details appear on every invoice.</p></div>
-        <button class="icon-btn" id="closeSettings">×</button>
-      </div>
-      <div class="form-grid two">
-        <label>Legal / Business Name<input id="setName" /></label>
-        <label>GSTIN<input id="setGstin" maxlength="15" /></label>
-        <label>PAN<input id="setPan" maxlength="10" /></label>
-        <label>Phone<input id="setPhone" /></label>
-        <label>Email<input id="setEmail" type="email" /></label>
-        <label>State<input id="setState" /></label>
-        <label>State Code<input id="setStateCode" maxlength="2" /></label>
-        <label>Pincode<input id="setPincode" maxlength="6" /></label>
-        <label class="full">Business Address<textarea id="setAddress" rows="3"></textarea></label>
-        <label>Invoice Prefix<input id="setPrefix" placeholder="INV-" /></label>
-        <label>Next Invoice Number<input id="setNextNumber" type="number" min="1" /></label>
-        <label class="full">Default Notes / Bank Details<textarea id="setNotes" rows="4"></textarea></label>
-      </div>
-      <div class="modal-actions">
-        <button class="btn secondary" id="cancelSettings">Cancel</button>
-        <button class="btn primary" id="saveSettings">Save Settings</button>
-      </div>
-    </div>
+ <div class="party">
+  <div class="box"><div class="sectionTitle">Seller / Supplier</div><div id="sellerCard"></div><button class="btn ghost fullBtn" id="editSeller">Edit Seller Details</button></div>
+  <div class="box"><div class="sectionTitle">Buyer / Recipient</div>
+   <div class="grid two">
+    <label>Customer / Company<input id="buyerName"></label><label>GSTIN<input id="buyerGstin" maxlength="15" placeholder="Leave blank if unregistered"></label>
+    <label>Phone<input id="buyerPhone"></label><label>State<input id="buyerState" placeholder="e.g. Delhi"></label>
+    <label class="full">Billing Address<textarea id="buyerAddress" rows="2"></textarea></label>
+    <label>City<input id="buyerCity"></label><label>Pincode<input id="buyerPin" maxlength="6"></label>
+   </div>
   </div>
+ </div>
 
-  <script src="app.js"></script>
-</body>
-</html>
+ <div class="section">
+  <div class="itemsHead"><div class="sectionTitle">Products / Services</div><button class="btn ghost" id="addItem">+ Add Item</button></div>
+  <div class="tableWrap"><table><thead><tr><th>Product / Service</th><th>HSN/SAC</th><th>Qty</th><th>Unit</th><th>Rate</th><th>Discount</th><th>GST</th><th>Taxable</th><th></th></tr></thead><tbody id="items"></tbody></table></div>
+ </div>
+
+ <div class="bottom">
+  <div class="box"><div class="sectionTitle">Notes / Bank / Terms</div><textarea id="notes" rows="10" placeholder="Payment terms, bank details, UPI, warranty, etc."></textarea></div>
+  <div class="box totals">
+   <div class="supply"><small>Tax Treatment</small><b id="taxMode">Intra-State — CGST + SGST</b></div>
+   <div class="row"><span>Taxable Amount</span><b id="taxable">₹0.00</b></div>
+   <div class="row"><span>CGST</span><b id="cgst">₹0.00</b></div><div class="row"><span>SGST</span><b id="sgst">₹0.00</b></div>
+   <div class="row"><span>IGST</span><b id="igst">₹0.00</b></div><div class="row"><span>Round Off</span><b id="round">₹0.00</b></div>
+   <div class="grand"><span>Grand Total</span><b id="total">₹0.00</b></div>
+   <div class="words"><small>Amount in Words</small><b id="words">Zero Rupees Only</b></div>
+  </div>
+ </div>
+</section>
+
+<section class="panel">
+ <div class="panelHead compact"><div><h2>Invoice History</h2><p>Invoices saved on this device.</p></div><input id="search" class="search" placeholder="Search invoice / customer"></div>
+ <div class="tableWrap"><table><thead><tr><th>Invoice</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead><tbody id="history"></tbody></table></div>
+</section>
+</main>
+
+<div class="modal hidden" id="modal"><div class="modalBox"><div class="modalHead"><div><h2 id="modalTitle">Seller Details</h2><p id="modalSub">These details appear on your invoices.</p></div><button class="x" id="closeModal">×</button></div><div id="modalContent"></div></div></div>
+<script src="app.js"></script>
+</body></html>
